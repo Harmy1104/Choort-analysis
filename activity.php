@@ -21,7 +21,6 @@
     while($row = mysqli_fetch_assoc($result)) {
         // --- Doing this removes duplicates
         $dates[$row['login_time']] = $row['login_time'];
-        // echo gettype($row['login_time']);
     }
     $dates = array_keys($dates);
 
@@ -94,10 +93,7 @@
                 $user_count[$dates[$i]]['revisit-percent'][$j] = $revisit_prcnt;
             }
         }
-        // echo "---------------\n";
     }
-
-    // print_r($user_count);
 ?>
 
 <!DOCTYPE html>
