@@ -39,7 +39,6 @@
         for($j = $i; $j < count($dates); $j++){
             if($j == $i){
                 $user_count[$dates[$i]]['revisit-percent'][$j] = '100';
-                // $total_user_count_till_date += count($user_count[$dates[$j]]['new-users']);
             } else {
                 // revisits = intersection between day j total users and day j-1 new users
                 $revisit = count(array_intersect($user_count[$dates[$j]]['total-users'], $user_count[$dates[$j-1]]['new-users']));
@@ -50,8 +49,6 @@
             }
         }
     }
-
-    // print_r($user_count);
 ?>
 
 <!DOCTYPE html>
