@@ -37,23 +37,21 @@
         $index = 0;
         // for every column
         for($j = $i; $j < count($dates); $j++){
-            if($j == 0){
-                $user_count[$dates[$i]]['revisit-percent'][$j] = '<span>assume</span>100';
-                $total_user_count_till_date += count($user_count[$dates[$j]]['total-users']);
+            if($j == $i){
+                $user_count[$dates[$i]]['revisit-percent'][$j] = '100';
+                // $total_user_count_till_date += count($user_count[$dates[$j]]['new-users']);
             } else {
-                // total user count till j
-                // total_user_count_till_date = total-user on day j - revisits from day j-1
-                $total_user_count_till_date += count($user_count[$dates[$j]]['total-users']) - 
-                (count($user_count[$dates[$j]]['total-users']) - count(array_diff($user_count[$dates[$j]]['total-users'], $user_count[$dates[$j-1]]['total-users'])));
-
-                // revisits on day j = total users on day j - new users on day j
-                $revisit = count($user_count[$dates[$j]]['total-users']) - count($user_count[$dates[$j]]['new-users']);
+                // revisits = intersection between day j total users and day j-1 new users
+                $revisit = count(array_intersect($user_count[$dates[$j]]['total-users'], $user_count[$dates[$j-1]]['new-users']));
+                $previous_day_new_user_count = count($user_count[$dates[$j-1]]['new-users']);
                 
-                $revisit_prcnt =  number_format((($revisit / $total_user_count_till_date) * 100), 2, '.', '');
+                $revisit_prcnt =  number_format((($revisit / $previous_day_new_user_count) * 100), 2, '.', '');
                 $user_count[$dates[$i]]['revisit-percent'][$j] = $revisit_prcnt;
             }
         }
     }
+
+    // print_r($user_count);
 ?>
 
 <!DOCTYPE html>
@@ -93,12 +91,6 @@
         background-color: #008caf;
     }
 
-    span{
-        font-size: .5em;
-        position: absolute;
-        top: 9.5em;
-    }
-
 </style>
 
 <body>
@@ -110,7 +102,7 @@
                     <th>New Users</th>
                     <?php 
                         for($i = 0; $i < count($dates); $i++){
-                            echo "<th>Day " . ($i+1)  . "</th>";
+                            echo "<th>Day " . ($i)  . "</th>";
                         }
                     ?>
                 </tr>
